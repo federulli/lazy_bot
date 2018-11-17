@@ -1,6 +1,8 @@
 import requests
+from decorators import admin_only
 
 
+@admin_only
 def list_torrents(bot, update):
     r = requests.get('http://127.0.0.1:8080/query/torrents')
     bot.send_message(

@@ -1,3 +1,4 @@
+import os
 from telegram.ext import (
     Updater,
     CommandHandler,
@@ -19,7 +20,7 @@ def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
 
 
-updater = Updater(token='789083442:AAGIPWdm1-VJ1aGSJR4-0x6FYH0sU-bgt6o')
+updater = Updater(token=os.environ['TOKEN'])
 
 dispatcher = updater.dispatcher
 

@@ -1,7 +1,7 @@
 import requests
 from ..utils import get_host
 from tabulate import tabulate
-
+from decorators import admin_only
 
 from commands.tvshow.status import (
     CREATE_TV_SHOW,
@@ -16,6 +16,7 @@ def cancel(bot, update):
     return END
 
 
+@admin_only
 def add_tv_show(bot, update):
     update.message.reply_text(
         'Ingrese el nombre de la serie:\n'
@@ -39,6 +40,7 @@ def create_tv_show(bot, update, chat_data):
     return END
 
 
+@admin_only
 def list_tv_shows(bot, update):
     r = requests.get(
         '{}/tv-shows/'.format(get_host())
@@ -52,6 +54,7 @@ def list_tv_shows(bot, update):
     )
 
 
+@admin_only
 def add_season(bot, update):
     update.message.reply_text(
         'Ingrese el id de la serie:\n'
