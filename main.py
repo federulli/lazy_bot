@@ -1,15 +1,17 @@
 from telegram.ext import (
     Updater,
     CommandHandler,
-    Filters,
-    MessageHandler,
+)
+
+from commands.tvshow.conversation_handler import(
+    tv_show_conversation_handler,
+    season_conversation_handler,
 )
 
 from commands.tvshow.commands import (
-    add_tv_show,
-    add_season,
     list_tv_shows,
 )
+
 from commands.torrent.command import list_torrents
 
 
@@ -25,19 +27,9 @@ dispatcher = updater.dispatcher
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
-add_tv_show_handler = CommandHandler(
-    'add_tv_show',
-    add_tv_show,
-    pass_args=True
-)
-dispatcher.add_handler(add_tv_show_handler)
 
-add_season_handler = CommandHandler(
-    'add_season',
-    add_season,
-    pass_args=True
-)
-dispatcher.add_handler(add_season_handler)
+dispatcher.add_handler(tv_show_conversation_handler)
+dispatcher.add_handler(season_conversation_handler)
 
 list_tv_shows_handler = CommandHandler(
     'list_tv_shows',
