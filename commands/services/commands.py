@@ -5,7 +5,7 @@ import subprocess
 @admin_only
 def services_status(bot, update):
     p = subprocess.run(
-        ['sudo', 'supervisorctl', 'status'],
+        ['sudo supervisorctl status'],
         stdout=subprocess.PIPE,
         shell=True
     )
