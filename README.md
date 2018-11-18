@@ -8,3 +8,4 @@ add_season - Agregar una nueva temporada
 add_movie - Agregar Pelicula
 list_movies - Listar Peliculas
 list_torrents - Listar descargas activas
+services_status - Estado de los servicios

@@ -22,6 +22,7 @@ from commands.movie.conversation_handler import (
 )
 
 from commands.torrent.command import list_torrents
+from commands.services.commands import services_status
 
 
 def start(bot, update):
@@ -57,7 +58,14 @@ list_movies_handler = CommandHandler(
     'list_movies',
     list_movies
 )
+
 dispatcher.add_handler(list_movies_handler)
 dispatcher.add_handler(movie_conversation_handler)
+
+services_status_handler = CommandHandler(
+    'services_status',
+    services_status
+)
+dispatcher.add_handler(services_status_handler)
 
 updater.start_polling()
