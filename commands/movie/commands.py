@@ -46,7 +46,12 @@ def list_movies(bot, update):
     bot.send_message(
         chat_id=update.message.chat_id,
         text='```{}```'.format(
-            tabulate([[movie['name'], movie['id']] for movie in r.json()])
+            tabulate(
+                [
+                    [movie['name'], movie['id'], "FOUND" if movie['torrent'] else "NOT FOUND"]
+                    for movie in r.json()
+                ]
+            )
         ),
         parse_mode='markdown'
     )
