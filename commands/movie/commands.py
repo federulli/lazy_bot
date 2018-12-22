@@ -45,7 +45,7 @@ def list_movies(bot, update):
     )
     message = ("id: {}\nname: {}\nyear: {}\nfound: {}".format(
         movie['id'], movie['name'], movie.get('year', ''),
-        "FOUND" if movie['torrent'] else "NOT FOUND"
+        movie['torrent'] is not None
     ) for movie in r.json())
     bot.send_message(
         chat_id=update.message.chat_id,
