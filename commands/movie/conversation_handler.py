@@ -8,13 +8,11 @@ from telegram.ext import (
 from commands.movie.commands import (
     add_movie,
     read_movie_name,
-    read_movie_year,
     create_movie,
     cancel,
 )
 from commands.movie.status import (
     READ_MOVIE_NAME,
-    READ_MOVIE_YEAR,
     CREATE_MOVIE,
 )
 
