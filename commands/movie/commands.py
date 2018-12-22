@@ -43,15 +43,14 @@ def list_movies(bot, update):
     r = requests.get(
         '{}/movies/'.format(get_host())
     )
+    message = ("id: {}\nname: {}\nyear: {}\nfound: {}".format(
+        movie['id'], movie['name'], movie.get('year', ''),
+        "FOUND" if movie['torrent'] else "NOT FOUND"
+    ) for movie in r.json())
     bot.send_message(
         chat_id=update.message.chat_id,
-        text='```{}```'.format(
-            tabulate(
-                [
-                    [movie['name'], movie['id'], "FOUND" if movie['torrent'] else "NOT FOUND"]
-                    for movie in r.json()
-                ]
-            )
+        text='\n\n'.join(
+          message
         ),
         parse_mode='markdown'
     )
