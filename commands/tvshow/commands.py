@@ -27,7 +27,8 @@ def add_tv_show(bot, update):
 def create_tv_show(bot, update, chat_data):
     name = update.message.text
     new_tv_show = {
-        "name": name
+        "name": name,
+        "year": None
     }
     r = requests.post(
         '{}/tv-shows/'.format(get_host()),
