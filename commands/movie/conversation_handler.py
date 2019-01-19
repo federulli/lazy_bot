@@ -10,6 +10,7 @@ from commands.movie.commands import (
     read_movie_name,
     create_movie,
     cancel,
+    list_movies,
 )
 from commands.movie.status import (
     READ_MOVIE_NAME,
@@ -39,4 +40,9 @@ movie_conversation_handler = ConversationHandler(
     fallbacks=[
         CommandHandler('cancel', cancel)
     ]
+)
+
+list_movies_handler = CommandHandler(
+    'list_movies',
+    list_movies
 )

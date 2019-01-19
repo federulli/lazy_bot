@@ -5,6 +5,7 @@ commands:
 add_tv_show - Agregar Serie
 list_tv_shows - Listar Series
 add_season - Agregar una nueva temporada
+list_seasons - Lista las temporadas de una Serie
 add_movie - Agregar Pelicula
 list_movies - Listar Peliculas
 list_torrents - Listar descargas activas

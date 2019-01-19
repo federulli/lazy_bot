@@ -1,4 +1,6 @@
 import os
+import structlog
+
 from telegram.ext import (
     Updater,
     CommandHandler,
@@ -7,22 +9,19 @@ from telegram.ext import (
 from commands.tvshow.conversation_handler import (
     tv_show_conversation_handler,
     season_conversation_handler,
-)
-
-from commands.tvshow.commands import (
-    list_tv_shows,
-)
-
-from commands.movie.commands import (
-    list_movies,
+    list_seasons_conversation_handler,
+    list_tv_shows_handler,
 )
 
 from commands.movie.conversation_handler import (
     movie_conversation_handler,
+    list_movies_handler
 )
 
-from commands.torrent.command import list_torrents
-from commands.services.commands import services_status
+from commands.torrent.conversation_handler import list_torrents_handler
+
+structlog.configure()
+logger = structlog.get_logger()
 
 
 def start(bot, update):
@@ -37,35 +36,29 @@ dispatcher = updater.dispatcher
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
-
+# TV SHOW
 dispatcher.add_handler(tv_show_conversation_handler)
-dispatcher.add_handler(season_conversation_handler)
 
-
-list_tv_shows_handler = CommandHandler(
-    'list_tv_shows',
-    list_tv_shows
-)
 dispatcher.add_handler(list_tv_shows_handler)
 
-list_torrents_handler = CommandHandler(
-    'list_torrents',
-    list_torrents
-)
+# TORRENT #
+
 dispatcher.add_handler(list_torrents_handler)
 
-list_movies_handler = CommandHandler(
-    'list_movies',
-    list_movies
-)
+# MOVIES #
 
 dispatcher.add_handler(list_movies_handler)
+
 dispatcher.add_handler(movie_conversation_handler)
 
-services_status_handler = CommandHandler(
-    'services_status',
-    services_status
-)
-dispatcher.add_handler(services_status_handler)
+# SEASONS #
 
-updater.start_polling()
+dispatcher.add_handler(season_conversation_handler)
+
+dispatcher.add_handler(list_seasons_conversation_handler)
+
+try:
+    logger.msg("Starting Lazy Bot")
+    updater.start_polling()
+except Exception as e:
+    logger.exception("ERROR", exc_info=True)
