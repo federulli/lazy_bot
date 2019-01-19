@@ -9,4 +9,8 @@ list_seasons - Lista las temporadas de una Serie
 add_movie - Agregar Pelicula
 list_movies - Listar Peliculas
 list_torrents - Listar descargas activas
-services_status - Estado de los servicios
+refresh_chapter_count - Actualiza la cantidad de capitulos
+delete_completed - Borra los torrents completados
+download_subtitles - Descarga subtitulos
+download_not_found_movies - Busca y descarga peliculas no encontradas
+download_not_found_chapters - Busca y descarga capitulos no encontrados
