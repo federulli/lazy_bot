@@ -32,8 +32,8 @@ def get_seasons(bot, update, chat_data):
                     season['id'],
                     season['number'],
                     season['completed'],
-                    season.get('chapter_count', 0),
-                    season.get('chapters', [])
+                    season['chapter_count'],
+                    [chapter['number'] for chapter in season['chapters']]
                 )
                 for season in r.json()
             )
