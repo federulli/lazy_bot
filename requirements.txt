@@ -1,4 +1,7 @@
+graphql-core==2.2.1
+gql
 python-telegram-bot
 requests
 tabulate
 structlog
+-e git+https://github.com/federulli/qbitorrent_api.git#egg=qbitorrent_api

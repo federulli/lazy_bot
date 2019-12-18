@@ -71,6 +71,7 @@ dispatcher.add_handler(download_subtitles_handler)
 dispatcher.add_handler(download_not_found_movies_handler)
 
 try:
+    #import wdb; wdb.set_trace()
     logger.msg("Starting Lazy Bot")
     updater.start_polling()
 except Exception as e:

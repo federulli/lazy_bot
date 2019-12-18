@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  telegram_bot:
+    build: .
+    container_name: "telegram_bot"
+    command: ["python3", "main.py"]
+    environment:
+      TOKEN: 997003798:AAHN9NqrusN7xRx1StExe6nLQQTm7j89vMc
+      ADMIN: federulli
+      QBITTORRENT_HOST: qbittorrent
+      QBITTORRENT_USERNAME: "admin"
+      QBITTORRENT_PASSWORD: "adminadmin"
+
+networks:
+  default:
+    external:
+      name: lazyapp_default

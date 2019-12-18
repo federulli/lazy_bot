@@ -1,4 +1,4 @@
-import requests
+import structlog
 from ..utils import get_host
 from decorators import admin_only
 
@@ -7,6 +7,11 @@ from commands.movie.status import (
     CREATE_MOVIE,
     END,
 )
+
+from commands.queries import client, CREATE_MOVIE_MUTATION
+
+
+logger = structlog.get_logger()
 
 
 def cancel(bot, update):
@@ -31,32 +36,35 @@ def read_movie_name(bot, update, chat_data):
 
 
 def create_movie(bot, update, chat_data):
-    name = chat_data['name']
     try:
-        # todo algun dia hacer esto bien
-        year = int(update.message.text)
-        if year <= 0:
-            raise Exception()
-    except:
-        year = None
+        name = chat_data['name']
+        try:
+            # todo algun dia hacer esto bien
+            year = int(update.message.text)
+            if year <= 0:
+                raise Exception()
+        except:
+            year = None
 
-    new_movie = {
-        "name": name,
-        "year": year
-    }
-    r = requests.post(
-        '{}/movies/'.format(get_host()),
-        json=new_movie
-    )
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text="{} id: {}".format(name, r.json()['id'])
-    )
+        response = client.execute(
+                CREATE_MOVIE_MUTATION,
+                {'name': name, 'year': year}
+        )
+        message = "{} id: {}".format(name, response["createMovie"]['movie']['id'])
+    except Exception as e:
+        message = str(e)
+        logger.exception(str(e), exc_info=True)
+    finally:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message
+        )
     return END
 
 
 @admin_only
 def list_movies(bot, update):
+    """
     r = requests.get(
         '{}/movies/'.format(get_host())
     )
@@ -64,10 +72,10 @@ def list_movies(bot, update):
         movie['id'], movie['name'], movie.get('year', ''),
         movie['torrent'] is not None
     ) for movie in r.json())
-    bot.send_message(
+    bot.send_message(ls
         chat_id=update.message.chat_id,
         text='\n\n'.join(
           message
         ),
         parse_mode='markdown'
-    )
+    )"""
