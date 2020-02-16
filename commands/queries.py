@@ -41,3 +41,12 @@ CREATE_TV_SHOW_MUTATION = gql("""
         }
     }
 """)
+
+GET_TV_SHOWS_QUERY =  gql("""
+    query GetTvShows {
+            tvShows{
+            id
+            name
+            }
+        }
+""")
