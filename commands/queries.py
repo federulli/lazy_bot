@@ -22,3 +22,14 @@ CREATE_MOVIE_MUTATION = gql("""
         }
     }
 """)
+
+GET_MOVIES_QUERY = gql("""
+    query GetMovies{
+            movies {
+                id
+                name
+                year
+                torrent{id}
+            }
+        }
+""")

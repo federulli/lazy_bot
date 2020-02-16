@@ -8,7 +8,7 @@ from commands.movie.status import (
     END,
 )
 
-from commands.queries import client, CREATE_MOVIE_MUTATION
+from commands.queries import client, CREATE_MOVIE_MUTATION, GET_MOVIES_QUERY
 
 
 logger = structlog.get_logger()
@@ -64,18 +64,20 @@ def create_movie(bot, update, chat_data):
 
 @admin_only
 def list_movies(bot, update):
-    """
-    r = requests.get(
-        '{}/movies/'.format(get_host())
-    )
-    message = ("id: {}\nname: {}\nyear: {}\nfound: {}".format(
-        movie['id'], movie['name'], movie.get('year', ''),
-        movie['torrent'] is not None
-    ) for movie in r.json())
-    bot.send_message(ls
-        chat_id=update.message.chat_id,
-        text='\n\n'.join(
-          message
-        ),
-        parse_mode='markdown'
-    )"""
+    try:
+        response = client.execute(GET_MOVIES_QUERY)
+        logger.info(response)
+        message = ("id: {}\nname: {}\nyear: {}\nfound: {}".format(
+            movie['id'], movie['name'], movie.get('year', ''),
+            movie['torrent'] is not None
+        ) for movie in response['movies'])
+        message = '\n\n'.join(message)
+    except Exception as e:
+        message = str(e)
+        logger.exception(str(e), exc_info=True)
+    finally:    
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message,
+            parse_mode='markdown'
+        )
