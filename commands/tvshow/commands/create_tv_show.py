@@ -3,6 +3,8 @@ from ...utils import get_host
 from decorators import admin_only
 import structlog
 
+from commands.queries import client, CREATE_TV_SHOW_MUTATION
+
 from commands.tvshow.status import (
     CREATE_TV_SHOW,
     END,
@@ -20,16 +22,16 @@ def add_tv_show(bot, update):
 
 def create_tv_show(bot, update, chat_data):
     name = update.message.text
-    new_tv_show = {
-        "name": name,
-        "year": None
-    }
-    r = requests.post(
-        '{}/tv-shows/'.format(get_host()),
-        json=new_tv_show
-    )
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text="{} id: {}".format(name, r.json()['id'])
-    )
+    try:
+        response = client.execute(CREATE_TV_SHOW_MUTATION, {"name": name})
+        logger.info(response)
+        message = "{} id: {}".format(name, response['createTvShow']['tvShow']['id'])
+    except Exception as e:
+        logger.exception(str(e), exc_info=True)
+        message = str(e)
+    finally:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message
+        )
     return END

@@ -33,3 +33,11 @@ GET_MOVIES_QUERY = gql("""
             }
         }
 """)
+
+CREATE_TV_SHOW_MUTATION = gql("""
+    mutation CreateTVShow($name: String!){
+        createTvShow(name:$name){
+            tvShow{id}
+        }
+    }
+""")
