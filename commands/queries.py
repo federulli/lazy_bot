@@ -50,3 +50,11 @@ GET_TV_SHOWS_QUERY =  gql("""
             }
         }
 """)
+
+CREATE_SEASON_MUTATION =  gql("""
+    mutation CreateSeason($show_id: ID! $number: Int!){
+        createSeason(tvShowId:$show_id, number: $number){
+            season{number}
+        }
+    }
+""")

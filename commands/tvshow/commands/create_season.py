@@ -10,6 +10,8 @@ from commands.tvshow.status import (
 )
 logger = structlog.get_logger()
 
+from commands.queries import client, CREATE_SEASON_MUTATION
+
 
 @admin_only
 def add_season(bot, update):
@@ -28,15 +30,18 @@ def read_tv_show_id(bot, update, chat_data):
 
 
 def create_season(bot, update, chat_data):
-    r = requests.post(
-        "{}/tv-shows/{}/seasons/".format(
-            get_host(),
-            chat_data['tv_show_id']
-        ),
-        json={"number": update.message.text}
-    )
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text=r.status_code
-    )
+    message = 'OK'
+    try:
+        client.execute(
+            CREATE_SEASON_MUTATION,
+             {"show_id": chat_data['tv_show_id'], "number": update.message.text}
+        )
+    except Exception as e:
+        logger.exception(str(e), exc_info=True)
+        message = str(e)
+    finally:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message
+        )
     return END
