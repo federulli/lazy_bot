@@ -7,6 +7,10 @@ from commands.tvshow.status import (
     END,
     LIST_SEASONS,
 )
+
+from commands.queries import client, LIST_SEASONS_QUERY
+
+
 logger = structlog.get_logger()
 
 
@@ -21,23 +25,23 @@ def list_seasons(bot, update):
 def get_seasons(bot, update, chat_data):
     try:
         tv_show_id = int(update.message.text)
-        r = requests.get(
-            '{}/tv-shows/{}/seasons/'.format(get_host(), tv_show_id),
-        )
-        r.raise_for_status()
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text="\n\n".join(
-                'id: {}\nnumber: {}\ncompleted: {}\nchapter_count: {}\nchapters: {}'.format(
+        response = client.execute(LIST_SEASONS_QUERY, {'tv_show_id': tv_show_id})
+        message = "\n\n".join(
+                'id: {}\nnumber: {}\ncompleted: {}\nepisode_count: {}\nepisodes: {}'.format(
                     season['id'],
                     season['number'],
                     season['completed'],
-                    season['chapter_count'],
+                    season['chapterCount'],
                     [chapter['number'] for chapter in season['chapters']]
                 )
-                for season in r.json()
+                for season in response['seasons']
             )
-        )
-    except Exception:
+    except Exception as e:
         logger.exception('ERROR', exc_info=True)
+        message = str(e)
+    finally:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=message
+        )
     return END

@@ -58,3 +58,15 @@ CREATE_SEASON_MUTATION =  gql("""
         }
     }
 """)
+
+LIST_SEASONS_QUERY = gql("""
+    query GetSeason($tv_show_id: ID!) {
+        seasons(tvShowId: $tv_show_id){
+            id
+            chapters{number}
+            completed
+            number
+            chapterCount
+        }
+    }
+""")
