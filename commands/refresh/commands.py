@@ -2,21 +2,22 @@ from ..utils import get_host
 import requests
 import structlog
 
+from commands.queries import client
+
+
 logger = structlog.get_logger()
 
 
-def refresh(bot, update, type):
+def refresh(bot, update, action):
     try:
-        r = requests.post(
-            "{}/refresh/".format(get_host()),
-            json={"type": type}
-        )
-        r.raise_for_status()
+        message = 'OK'
+        client.execute(action)
+    except Exception as e:
+        message = str(e)
+        logger.exception('ERROR refreshing',
+                         exc_info=True)
+    finally:
         bot.send_message(
             chat_id=update.message.chat_id,
-            text='OK {}'.format(type)
+            text=message
         )
-    except Exception:
-        logger.exception('ERROR refreshing',
-                         type=type,
-                         exc_info=True)

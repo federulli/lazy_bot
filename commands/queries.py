@@ -70,3 +70,9 @@ LIST_SEASONS_QUERY = gql("""
         }
     }
 """)
+
+SEARCH_MOVIES_MUTATION = gql("""mutation {searchMovies{msg}}""")
+SEARCH_EPISODES_MUTATION = gql("""mutation {searchChapters{msg}}""")
+DELETE_COMPLETED_TORRENTS_MUTATION = gql("""mutation {deleteCompleted{msg}}""")
+RELOAD_CHAPTER_COUNT_MUTATION = gql("""mutation {reloadChapterCount{msg}}""")
+DELETE_ALL_TORRENTS_MUTATION = gql("""mutation {deleteAllTorrents{msg}}""")
